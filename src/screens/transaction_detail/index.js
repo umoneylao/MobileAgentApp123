@@ -3795,6 +3795,7 @@ class TransactionDetail extends Component {
 
                         <View style={{ padding: 20 }}>
                             {byPassPIN && checkAmount ? null : (
+                                
                                 <View style={{ marginBottom: 20 }}>
                                     <FullTextInput
                                         label={I18n.t('pleaseInputPinToLogin')}

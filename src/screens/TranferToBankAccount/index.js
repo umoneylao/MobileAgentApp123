@@ -57,7 +57,7 @@ class TranferToBankAccount extends Component {
         this.onCheckBypassPIN()
     }
     componentWillUnmount() {
-        this.props.navigation.popToTop()
+        // this.props.navigation.popToTop()
     }
     onClickChange() {
         this.props.navigation.goBack(null);

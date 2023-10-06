@@ -5,7 +5,7 @@
   "scripts": {
     "android": " react-native run-android",
     "ios": "NODE_OPTIONS=--openssl-legacy-provider react-native run-ios",
-    "start": "NODE_OPTIONS=--openssl-legacy-provider react-native start", 
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-native start",
     "test": "jest",
     "lint": "eslint ."
   },
@@ -62,7 +62,7 @@
     "react-native-paper": "^4.9.1",
     "react-native-parallax-header": "^1.1.4",
     "react-native-pdf": "5.0.12",
-    "react-native-permissions": "^3.0.4",
+    "react-native-permissions": "^3.9.3",
     "react-native-pure-jwt": "^2.2.2",
     "react-native-qrcode-scanner": "^1.5.3",
     "react-native-reanimated": "2.2.0",
@@ -99,5 +99,7 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "reactNativePermissionsIOS": ["Camera"],
+  "postinstall": "react-native setup-ios-permissions && pod-install"
 }
