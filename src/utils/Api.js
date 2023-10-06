@@ -1,14 +1,14 @@
 import { create } from 'apisauce'
 // import axios from "axios";
 
-export const baseUpload = "https://test-api-um.unitel.com.la:8998/" //link img sokxay test
-// export const baseUpload = "http://183.182.106.165:9889/" //link img sokxay PUBLIC
+// export const baseUpload = "https://test-api-um.unitel.com.la:8998/" //link img sokxay test
+export const baseUpload = "http://183.182.106.165:9889/" //link img sokxay PUBLIC
 
 export const SERVER_PATH = 'https://test-api-um.unitel.com.la:8280' // test public ip real server 2020
 // export const SERVER_PATH = 'https://api-umoney.unitel.com.la:8282' // PUBLIC
 
-export const SERVER_PATH_EU = 'https://test-api-um.unitel.com.la:8091' // Promotion UAT
-// export const SERVER_PATH_EU = 'https://mobile.unitel.com.la:8089' // Promotion Product
+// export const SERVER_PATH_EU = 'https://test-api-um.unitel.com.la:8091' // Promotion UAT
+export const SERVER_PATH_EU = 'https://mobile.unitel.com.la:8089' // Promotion Product
 
 export const SERVER_UPLOAD = 'https://test-api-um.unitel.com.la:8901' // test upload img world bank
 // export const SERVER_UPLOAD = 'http://183.182.106.166:8548' // Public upload img world bank

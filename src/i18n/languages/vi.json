@@ -468,7 +468,8 @@
   "amountMustbefrom": "Số tiền nhỏ nhất từ  {{amount}}",
   "posCode":"Mã điểm bán",
   "inputThePOSCodeHere":"Nhập mã điểm bán",
-  //-----------------sokxay languages----
+
+
   "sokxayService":"Xổ số Sokxay",
   "cusAddress":"Địa chỉ",
   "enterAddress":"Nhập địa chỉ của bạn",
