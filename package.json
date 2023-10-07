@@ -72,6 +72,7 @@
     "react-native-screens": "^2.10.1",
     "react-native-share": "^6.4.0",
     "react-native-simple-radio-button": "^2.7.4",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-svg": "^9.12.0",
     "react-native-swiper": "^1.6.0",
@@ -100,6 +101,8 @@
   "jest": {
     "preset": "react-native"
   },
-  "reactNativePermissionsIOS": ["Camera"],
+  "reactNativePermissionsIOS": [
+    "Camera"
+  ],
   "postinstall": "react-native setup-ios-permissions && pod-install"
 }

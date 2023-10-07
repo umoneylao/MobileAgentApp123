@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Modal, TouchableWithoutFeedback, StatusBar, SafeAreaView, Keyboard, Alert, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, ScrollView, Modal, TouchableWithoutFeedback, StatusBar, SafeAreaView, Keyboard, Alert, TouchableOpacity, Pressable,KeyboardAvoidingView } from 'react-native';
 import { ActivityIndicator, FullNewButton, Notification, FullTextInput } from '../../components'
 import styles from './styles'
 import I18n from 'react-native-i18n'
@@ -3121,7 +3121,7 @@ class TransactionDetail extends Component {
         this.setState({ isChecked: !this.state.isChecked })
     }
     onClearPhone() { this.setState({ codePin: null }) }
-    onClearisOTP() { this.setState({ isOTP: null }) }
+    onClearisOTP() { this.setState({ isOTP: null, isShow:true }) }
     onTimer() {
         const x = setInterval(() => {
             let { eventDate } = this.state
@@ -3191,6 +3191,12 @@ class TransactionDetail extends Component {
 
         console.log('checkAmount-----detel:', this.state)
         return (
+            <KeyboardAvoidingView
+            style={{ flex: 1 }}
+             behavior="padding"
+              enabled
+              keyboardVerticalOffset={180} // Đặt giá trị tùy chỉnh khác
+        >
             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
                 <SafeAreaView style={styles.container}>
                     <StatusBar barStyle='dark-content' backgroundColor={Colors.white} />
@@ -3964,8 +3970,11 @@ class TransactionDetail extends Component {
                             this.setState({ setModalVisible: false })
                         }}
                     >
+
                         <Pressable onPress={() => this.setState({ setModalVisible: false })} style={{ flex: 1 }}>
+
                             <View style={styles.centeredView}>
+
                                 <View style={styles.modalView}>
                                     <Text style={styles.modalText}>{I18n.t('EnterOTP')}</Text>
                                     <Text style={{ color: '#989898', textAlign: 'center', marginBottom: 5 }}>{I18n.t('titelOTP')}</Text>
@@ -4002,15 +4011,20 @@ class TransactionDetail extends Component {
                                             iconRight='close'
                                             textError={I18n.t('incorrectPhoneNumber')}
                                             onclick={() => this.onClearisOTP()}
+                                            
                                         />
                                     </View>
 
                                 </View>
+
                             </View>
+
                         </Pressable>
+
                     </Modal>
                 </SafeAreaView>
             </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
         );
     }
 }

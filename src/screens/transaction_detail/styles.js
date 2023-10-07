@@ -222,7 +222,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 20,
     padding: 35,
     alignItems: "center",
-    height: '50%'
+    height: '70%'
   },
   modalText: {
     marginBottom: 10,

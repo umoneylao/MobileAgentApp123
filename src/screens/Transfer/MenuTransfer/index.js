@@ -29,7 +29,7 @@ class MenuTransfer extends Component {
                 animation="slideInLeft"
                 delay={index * 100}
             >
-                <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => this.props.navigation.navigate(item.navigate)}>
+                <TouchableOpacity style={{ marginBottom: 20 ,padding:5}} onPress={() => this.props.navigation.navigate(item.navigate)}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ width: 45, height: 45 }}>

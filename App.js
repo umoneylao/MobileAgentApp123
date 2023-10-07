@@ -38,7 +38,7 @@ let store = createStore(persistedReducer, undefined, compose(
   applyMiddleware(sagaMiddleware),
 ));
 let persistor = persistStore(store)
-export default class App extends Component<{}> {
+export default class App extends Component {
   render() {
     return (
       <PaperProvider theme={theme}>

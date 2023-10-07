@@ -13,6 +13,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.bgText,
     height: 40,
     fontWeight: "bold",
+    paddingLeft:20
   },
   textBox: {
     width: "100%",
