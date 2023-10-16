@@ -10,12 +10,19 @@ import { callLinkWeb } from '../../actions/GetPromontion'
 import LottieView from 'lottie-react-native';
 import I18n from 'react-native-i18n'
 import MaterialIcons from 'react-native-vector-icons/Ionicons'
+import { useNavigation } from '@react-navigation/native';
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
-const onback =()=>{
-    // navigation.goBack(null);
-}
-const MyStatusBar = ({ backgroundColor, ...props }) => (
+
+const MyStatusBar = ({ backgroundColor, ...props }) => {
+    
+    const navigation = useNavigation();
+    const onback =()=>{
+        navigation.goBack();
+    }
+
+    return (
+    
     <View style={[styles.statusBar, { backgroundColor }]}>
         <SafeAreaView>
             <StatusBar translucent backgroundColor={backgroundColor} {...props} />
@@ -24,7 +31,7 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
             </TouchableOpacity>
         </SafeAreaView>
     </View>
-);
+)};
 class UnitelSalesman extends Component {
     constructor(props) {
         super(props);

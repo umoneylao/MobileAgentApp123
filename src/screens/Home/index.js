@@ -153,6 +153,11 @@ class Home extends Component {
     let tyle = 5;
     if (item.href === "ShopUnitel") {
       this.props.callGetMenu2(_language, tyle);
+      
+      console.log("======================")
+      console.log("this.props.callGetMenu2(_language, tyle)",this.props.callGetMenu2(_language, tyle))
+      console.log("======================")
+
       this.setState({ isGetMenu2: true });
     } else {
       this.props.navigation.navigate(item.href);
@@ -194,34 +199,40 @@ class Home extends Component {
     );
   }
   renderItemMenuCustomerService(item, index) {
-    return (
-      <View>
-        {item.content_promotion === "CUSTOMER_SERVICE" ? (
-          <TouchableOpacity
-            style={styles.warpItemList}
-            onPress={() =>
-              item.status === "1" ? this.onNavigationCustomer(item) : null
-            }
-          >
-            <Image
-              source={{
-                uri: `${SERVER_PATH_EU}/cms-backend/cms/file/v1.0/image/${item.detail_imgs}`,
-              }}
-              style={
-                item.status === "1" ? styles.iconStyle : styles.iconStyleDisible
+
+    // if(item.title_promotion!=="BaduLoto"){
+      return (
+        <View style={{flexWrap:"wrap",alignItems:"center"}}>
+          {item.title_promotion==="UnitelSalesman" || item.content_promotion === "CUSTOMER_SERVICE" ? (
+            <TouchableOpacity
+              style={styles.warpItemList}
+              onPress={() =>
+                item.status === "1" ? this.onNavigationCustomer(item) : null
               }
-            />
-            <Text style={styles.txtIcon} numberOfLines={2}>
-              {I18n.t(item.title_promotion)}
-            </Text>
-          </TouchableOpacity>
-        ) : null}
-      </View>
-    );
+            >
+              <Image
+                source={{
+                  uri: `${SERVER_PATH_EU}/cms-backend/cms/file/v1.0/image/${item.detail_imgs}`,
+                }}
+                style={
+                  item.status === "1" ? styles.iconStyle : styles.iconStyleDisible
+                }
+              />
+              <Text style={styles.txtIcon} numberOfLines={2}>
+                {I18n.t(item.title_promotion)}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      );
+    
   }
   renderItemMenuPOSService(item, index, isAgent) {
     return (
-      <View>
+      <View style={{
+       
+        flexWrap: "wrap",
+      }}>
         {isAgent ? (
           item.content_promotion === "POS_SERVICE" && item.role_id === "7" ? (
             <TouchableOpacity
@@ -671,10 +682,27 @@ class Home extends Component {
       } catch (error) {}
     }
     if (this.state.isGetManuHome) {
+       const saleMan=  {
+      "button_title":"null",
+      "content_promotion":"MENU_SHOP",
+      "detail_imgs":"ic_UnitelSaler.png",
+      "end_date":"2022-08-31T00:00:00.000+07:00",
+      "href":"UnitelSalesman",
+      "id":"60",
+      "location":"lo",
+      "priority":"60",
+      "role_id":null,
+      "start_date":"2022-08-06T00:00:00.000+07:00",
+      "status":"1",
+      "title_promotion":"UnitelSalesman",
+      "tyle":"5"
+   };
       try {
         switch (nextProps.actionType) {
           case "GET_MENU_HOME_SUCCESS":
             let dataManu = nextProps.dataManu;
+            let dataManuPush = nextProps.dataManu.data.push(saleMan);
+
             if (dataManu.data.length > 0) {
               // console.log('dataManu---------------0000000009999000:', dataManu)
               this.setState({ menuHome: dataManu.data, isGetManuHome: false });
@@ -801,6 +829,11 @@ class Home extends Component {
       menuPopup,
       errorMessenger,
     } = this.state;
+
+   
+
+
+
     return (
       <ScrollView style={styles.container}>
         {this.state.isLoading ? <ActivityIndicator /> : null}
@@ -904,7 +937,7 @@ class Home extends Component {
                   </View>
                 </View>
               </View>
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginTop: 10,}}>
                 <View style={styles.textConten}>
                   <Text style={styles.txtHeader}>
                     {isAgent
@@ -915,6 +948,11 @@ class Home extends Component {
                     <Text style={styles.textLine}>{I18n.t("Viewall")}</Text>
                   </TouchableOpacity>
                 </View>
+                <View style={{flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flex:1,
+                      flexWrap: "wrap",}}>
                 <FlatList
                   data={menuHome}
                   renderItem={({ item, index }) =>
@@ -925,6 +963,7 @@ class Home extends Component {
                   extraData={Object.assign(this.props)}
                   keyExtractor={(item, index) => item.id}
                 />
+              </View>
               </View>
             </View>
             <View style={styles.cardStyle}>
