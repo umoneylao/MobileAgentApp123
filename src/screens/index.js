@@ -84,6 +84,8 @@ import UnitelCommission from './ShopUnitel/UnitelCommission'
 import BaduLoto from './BaduLoto'
 import WebviewMyUnitel from './WebviewMyUnitel'
 import MBLesinge from './MBLesinge'
+import Ekyc from './Ekyc'
+import IdeaInitiative from './ideaInitiative'
 export{
     MenuTransfer,
     MenuCashIn,
@@ -170,5 +172,7 @@ export{
     UnitelCommission,
     BaduLoto,
     WebviewMyUnitel,
-    MBLesinge
+    MBLesinge,
+    Ekyc,
+    IdeaInitiative
 }

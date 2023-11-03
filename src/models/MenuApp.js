@@ -428,6 +428,13 @@ export const menuScratch = [
         img: Images.iconAPA,
         navigate: 'APAInsurance'
     }
+    ,
+    // {
+    //     id: '23',
+    //     name: 'Ekyc',
+    //     img: Images.ic_topup,
+    //     navigate: 'TopUpContainer'
+    // }
 ];
 
 export const menuScratchRole33 = [

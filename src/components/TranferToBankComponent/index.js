@@ -33,6 +33,7 @@ class TranferToBankComponent extends Component {
             <Animatable.View
                 animation="zoomIn" //zoomIn  slideInLeft
                 delay={id * 90}
+                key={id}
             >
                 <TouchableOpacity onPress={() => item.VISIBILITY == "VISIBLE" ? this.onClickSelectBank(item) : this.onComingsoon()} style={{ marginBottom: 8 }}>
                     <View style={styles.itemConten}>

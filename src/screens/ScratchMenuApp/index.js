@@ -152,11 +152,59 @@ class ScratchMenuApp extends Component {
     this.setState({ inputValue: text });
   };
   UNSAFE_componentWillReceiveProps(nextProps) {
+    const saleMan=  {
+      "button_title":"null",
+      "content_promotion":"MENU_SHOP",
+      "detail_imgs":"ic_UnitelSaler.png",
+      "end_date":"2022-08-31T00:00:00.000+07:00",
+      "href":"UnitelSalesman",
+      "id":"71",
+      "location":"lo",
+      "priority":"60",
+      "role_id":"0",
+      "start_date":"2022-08-06T00:00:00.000+07:00",
+      "status":"1",
+      "title_promotion":"UnitelSalesman",
+      "tyle":"3"
+   };
+   const Ekyc=  {
+    "button_title":"null",
+    "content_promotion":"UnitelSalesman",
+    "detail_imgs":"ic_ekyc.jpeg",
+    "end_date":"2022-08-31T00:00:00.000+07:00",
+    "href":"Ekyc",
+    "id":"70",
+    "location":"lo",
+    "priority":"61",
+    "role_id":"0",
+    "start_date":"2022-08-06T00:00:00.000+07:00",
+    "status":"1",
+    "title_promotion":"Ekyc",
+    "tyle":"3"
+ };
+ const ideaInitiative=  {
+  "button_title":"null",
+  "content_promotion":"IdeaInitiative",
+  "detail_imgs":"ic_creative.png",
+  "end_date":"2022-08-31T00:00:00.000+07:00",
+  "href":"IdeaInitiative",
+  "id":"69",
+  "location":"lo",
+  "priority":"62",
+  "role_id":"0",
+  "start_date":"2022-08-06T00:00:00.000+07:00",
+  "status":"1",
+  "title_promotion":"ideaInitiative",
+  "tyle":"3"
+};
     if (this.state.isGetManuHome) {
       try {
         switch (nextProps.actionType) {
           case "GET_MENU_HOME_SUCCESS":
             let dataManu = nextProps.dataManu;
+           dataManu.data.push(saleMan,Ekyc,ideaInitiative);
+           console.log("data.manu",dataManu.data)
+
             if (dataManu.data.length > 0) {
               this.setState({ data: dataManu.data, menuHome: dataManu.data });
             }
@@ -174,7 +222,6 @@ class ScratchMenuApp extends Component {
 
   render() {
     const { vulueScratch, menuHome, data, inputValue } = this.state;
-
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />

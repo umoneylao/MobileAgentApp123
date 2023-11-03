@@ -12,7 +12,8 @@ import {
   BackHandler,
   Platform,
   Keyboard,
-  Dimensions
+  Dimensions,
+  KeyboardAvoidingView
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -67,6 +68,8 @@ import { formatNumber } from "../../utils/Formater";
 
 const fall = new Animated.Value(1);
 const bs = React.createRef();
+const bs2 = React.createRef();
+
 class SettingScreen extends Component {
   constructor(props) {
     super(props);
@@ -82,6 +85,7 @@ class SettingScreen extends Component {
       getPin: null,
       switchValue: false,
       ValuePin: null,
+      valuePinPayFinger:null,
       switchValueInfo: false,
       dataInfo: null,
       setModle: false,
@@ -95,12 +99,31 @@ class SettingScreen extends Component {
       setModleShowinfo: false,
       valueAmount: null,
       snapPoints: [330, 0], // Các snapPoints ban đầu
+      valueFinger: "",
+      checkFingerPay: false,
+      getPayByFinger: null,
+      switchValueCheck: false,
+      pinPayFinger: null,
+      valuePinPayWithFinger:null,
+      valuePinPay:false
     };
     setTimeout(async () => {
       try {
         let onPhoneNumber = await AsyncStorage.getItem("phoneNumber");
+        let onPayByFinger = await AsyncStorage.getItem("payByFinger");
+        let switchValue = await AsyncStorage.getItem("switchValue");
+        const paybyFinger = await AsyncStorage.getItem("pinFingerPay");
+
         let onPinCode = await AsyncStorage.getItem("pinCode");
-        this.setState({ getPhone: onPhoneNumber, getPin: onPinCode });
+        console.log(paybyFinger,"paybyFinger")
+        this.setState({
+          getPhone: onPhoneNumber,
+          getPin: onPinCode,
+          switchValueCheck:
+            switchValue == "true" || switchValue == true ? true : false,
+          // pinPayFinger: onPayFinger,
+          // checkFingerPay:
+        });
       } catch (e) {
         console.log("---------Error get data login-----", e);
       }
@@ -110,8 +133,25 @@ class SettingScreen extends Component {
     try {
       const phoneNumber = await AsyncStorage.getItem("_getPhone");
       const pinCode = await AsyncStorage.getItem("_getPin");
+      // const paybyFinger = await AsyncStorage.getItem("_payByFinger");
+
       if (phoneNumber !== null && pinCode !== null) {
-        let data = phoneNumber + "," + pinCode;
+        let data = phoneNumber + "," + pinCode ;
+        return data;
+      }
+    } catch (error) {
+      console.log("Error retrieving data", error);
+    }
+  };
+  getRememberedPayByFinger = async () => {
+    try {
+      const phoneNumber = await AsyncStorage.getItem("_getPhone");
+      const pinCode = await AsyncStorage.getItem("_getPin");
+      const paybyFinger = await AsyncStorage.getItem("_payByFinger");
+
+
+      if (phoneNumber !== null && pinCode !== null && paybyFinger !== null) {
+        let data = phoneNumber + "," + pinCode + "," + paybyFinger;
         return data;
       }
     } catch (error) {
@@ -144,6 +184,8 @@ class SettingScreen extends Component {
       "hardwareBackPress",
       this.handleBackButtonClick
     );
+      Keyboard.addListener('keyboardDidShow', this.handleKeyboardDidShow);
+  Keyboard.addListener('keyboardDidHide', this.handleKeyboardDidHide);
   }
 
   componentWillUnmount() {
@@ -151,8 +193,11 @@ class SettingScreen extends Component {
       "hardwareBackPress",
       this.handleBackButtonClick
     );
+    // this.handleKeyboardDidShow?.remove();
+    // this.handleKeyboardDidHide?.remove();
+
     Keyboard.removeListener('keyboardDidShow', this.handleKeyboardDidShow);
-  Keyboard.removeListener('keyboardDidHide', this.handleKeyboardDidHide);
+      Keyboard.removeListener('keyboardDidHide', this.handleKeyboardDidHide);
   }
 
   handleKeyboardDidShow = (event) => {
@@ -169,27 +214,52 @@ class SettingScreen extends Component {
     const initialSnapPoints = [330, 0];
     this.setState({ snapPoints: initialSnapPoints });
   };
-
   async componentDidMount() {
+    console.log("componentDidMount")
     const data = await this.getRememberedUser();
+    console.log("dataTesst",data)
+    this.loadSwitchValue();
     const user = await this.onCheckDataInfo();
+    const check = await this.getRememberedPayByFinger();
     this.onCheckBypassPIN();
+    const switchValue = await AsyncStorage.getItem("switchValue");
+    if (switchValue !== null) {
+      this.setState({ switchValueCheck: JSON.parse(switchValue) });
+      console.log("ComponentDidMount", this.state.switchValueCheck);
+    }
     if (data) {
       const split = data.split(",");
       let phone = split[0];
       let pin = split[1];
+      // let checkFinger = split[2];
+      // console.log("====================================");
+      // console.log("checkFinger", checkFinger);
+      // console.log("====================================");
       this.setState({
         getPhone: phone || "",
         getPin: pin || "",
         switchValue: data ? true : false,
+        // getPayByFinger: checkFinger || "",
+        // checkFinger: checkFinger ? true : false,
       });
     }
     if (user) {
       this.setState({ switchValueInfo: user ? true : false });
     }
-    Keyboard.addListener('keyboardDidShow', this.handleKeyboardDidShow);
-  Keyboard.addListener('keyboardDidHide', this.handleKeyboardDidHide);
+    if (check) {
+      this.setState({ switchValueInfo: user ? true : false });
+    }
   }
+  loadSwitchValue = async () => {
+    try {
+      const switchValue = await AsyncStorage.getItem("switchValue");
+      if (switchValue !== null) {
+        this.setState({ switchValueCheck: JSON.parse(switchValue) });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   onCheckBypassPIN() {
     const { infoAccount } = this.props;
     let data = infoAccount.accountId;
@@ -223,6 +293,50 @@ class SettingScreen extends Component {
     } catch (error) {
       console.log(" Error removing", error);
     }
+  };
+  rememberUser2 = async () => {
+    const { getPhone, getPin, getPayByFinger } = this.state;
+    await AsyncStorage.setItem("pinFingerPay", getPin);
+    console.log("12344")
+
+    try {
+      // if (
+      //   getPhone !== "" &&
+      //   getPin !== "" &&
+      //   getPhone !== null &&
+      //   getPin !== null &&
+      //   getPayByFinger !== "" &&
+      //   getPayByFinger !== null
+      // ) {
+        await AsyncStorage.setItem("_getPhone", getPhone);
+        await AsyncStorage.setItem("_getPin", getPin);
+        await AsyncStorage.setItem("_payByFinger", getPayByFinger);
+        await AsyncStorage.setItem("pinFingerPay", getPin);
+        
+
+        // switchValue;
+      // } else {
+      //   alert("ON dat");
+      // }
+    } catch (error) {
+      console.log("Error saving data", error);
+    }
+  };
+
+  forgetUser2 = async () => {
+    try {
+      await AsyncStorage.removeItem("_getPhone");
+      await AsyncStorage.removeItem("_getPin");
+      await AsyncStorage.removeItem("_payByFinger");
+      // await AsyncStorage.removeItem("pinFingerPay");
+
+    } catch (error) {
+      console.log(" Error removing", error);
+    }
+  };
+  toggleSwitchPayFinger = (value) => {
+    this.setState({ valuePinPay: value });
+    bs2.current.snapTo(0);
   };
   BiometricsNotSupported = () => {
     this.refs.fingerPrintNosuport.onOpen();
@@ -821,6 +935,18 @@ class SettingScreen extends Component {
   Fingerprint() {}
   //
   toggleSwitch = (value) => {
+    if(value==true){
+      this.setState({ value: value });
+      bs.current.snapTo(0);
+    }
+    else{
+      this.fingerLogin(value);
+      this.setState({ value: value });
+      bs.current.snapTo(0);
+
+    }
+   
+// thay cho quickpayment
     this.setState({ value: value });
     bs.current.snapTo(0);
   };
@@ -968,16 +1094,96 @@ class SettingScreen extends Component {
   onChangePin(text) {
     this.setState({ ValuePin: text });
   }
+  onChangePinPayFinger(text) {
+    this.setState({ valuePinPayWithFinger: text });
+  }
+  fingerQuickPay(value) {
+    setTimeout(async () => {
+      try {
+        // kiểm tra ngôn ngữ hiện hành
+        // console.log(I18n.currentLocale());
+       
+          ReactNativeBiometrics.simplePrompt({
+            promptMessage:
+              I18n.currentLocale() == "vn"
+                ? "Vân Tay"
+                : I18n.currentLocale() == "lo"
+                ? "ເຂົ້າສູ່ລະບົບ"
+                : I18n.currentLocale() == "en"
+                ? "Biometrics"
+                : I18n.currentLocale() == "cn"
+                ? "指紋"
+                : "Biometrics",
+          })
+            .then((resultObject) => {
+              const { success } = resultObject;
+              if (success) {
+                this.setState({ switchValueCheck: value });
+                bs2.current.snapTo(1);
+              }
+            })
+            .catch((e) => {
+              
+              console.log("Errorrrrrrrrr",e);
+            });
+       
+      } catch (e) {
+        console.log(e);
+      }
+    }, 500);
+  }
+  fingerLogin(value) {
+    setTimeout(async () => {
+      try {
+        // kiểm tra ngôn ngữ hiện hành
+        // console.log(I18n.currentLocale());
+       
+          ReactNativeBiometrics.simplePrompt({
+            promptMessage:
+              I18n.currentLocale() == "vn"
+                ? "Vân Tay"
+                : I18n.currentLocale() == "lo"
+                ? "ເຂົ້າສູ່ລະບົບ"
+                : I18n.currentLocale() == "en"
+                ? "Biometrics"
+                : I18n.currentLocale() == "cn"
+                ? "指紋"
+                : "Biometrics",
+          })
+            .then((resultObject) => {
+              const { success } = resultObject;
+              if (success) {
+                this.setState({ switchValue: value });
+                bs.current.snapTo(1);
+              }
+            })
+            .catch((e) => {
+              
+              console.log("Errorrrrrrrrr",e);
+            });
+       
+      } catch (e) {
+        console.log(e);
+      }
+    }, 500);
+  }
   onOpneFinger = () => {
     const { ValuePin, getPin, value } = this.state;
+    Keyboard.dismiss();
+    this.setState({ValuePin:""})
+
 
     if (ValuePin == getPin) {
+      this.setState({ValuePin:""})
+
       ReactNativeBiometrics.isSensorAvailable().then((resultObject) => {
         const { available, biometryType } = resultObject;
         if (available && biometryType === ReactNativeBiometrics.TouchID) {
           this.setState({ switchValue: value });
           if (value === true) {
             this.rememberUser();
+            
+
           } else {
             this.forgetUser();
           }
@@ -1008,9 +1214,64 @@ class SettingScreen extends Component {
     Keyboard.dismiss();
     bs.current.snapTo(1);
   };
+  onOpenFinger2 = async() => {
+    Keyboard.dismiss();
+
+    const { ValuePin, getPin, valueFinger, switchValueCheck,valuePinPayWithFinger,valuePinPay } = this.state;
+    if (valuePinPayWithFinger == getPin) {
+      this.rememberUser2();
+        const paybyFinger = await AsyncStorage.setItem("pinFingerPay",valuePinPayWithFinger);
+        const paybyFinger1 = await AsyncStorage.getItem("pinFingerPay");
+
+        console.log(paybyFinger1,"123")
+
+      // this.setState({ valuePinPayWithFinger: "" });
+
+      ReactNativeBiometrics.isSensorAvailable().then((resultObject) => {
+        const { available, biometryType } = resultObject;
+        if (available && biometryType === ReactNativeBiometrics.TouchID) {
+          // this.setState({ switchValueCheck: switchValueCheck });
+          this.setState({ switchValueCheck: valuePinPay });
+
+          if (valueFinger === true) {
+            this.rememberUser2();
+          } else {
+            this.forgetUser2();
+          }
+        } else if (available && biometryType === ReactNativeBiometrics.FaceID) {
+          this.setState({ switchValueCheck: valuePinPay });
+          if (valueFinger === true) {
+            this.rememberUser2();
+          } else {
+            this.forgetUser2();
+          }
+        } else if (
+          available &&
+          biometryType === ReactNativeBiometrics.Biometrics
+        ) {
+          this.setState({ switchValueCheck: valuePinPay });
+          if (valueFinger === true) {
+            this.rememberUser2();
+          } else {
+            this.forgetUser2();
+          }
+        } else {
+          this.BiometricsNotSupported();
+        }
+      });
+    } else {
+
+      AlertNative(I18n.t("10155"));
+    }
+    bs2.current.snapTo(1);
+  };
   onClearPhone() {
     this.setState({ ValuePin: null });
   }
+  onClearPhone() {
+    this.setState({ valuePinPayWithFinger: null });
+  }
+
   renderInner = () => (
     <View style={styles.panel}>
       <View style={{ alignItems: "center" }}>
@@ -1041,7 +1302,47 @@ class SettingScreen extends Component {
       </TouchableOpacity>
     </View>
   );
+  renderInner2 = () => (
+    <View style={styles.panel}>
+
+      <View style={{ alignItems: "center" }}>
+        <Text style={styles.panelTitle}>
+          {I18n.t("pleaseInputPinToActive")}
+        </Text>
+        {/* <Text style={styles.panelSubtitle}>{I18n.t("NAV_FINGERPRINT")}</Text> */}
+      </View>
+   
+      <FullTextInput
+        label={I18n.t("pleaseInputPinToActive")}
+        // ref={textInputRef}
+        placeholder={I18n.t("leaveMessage")}
+        returnKeyType="done"
+        keyboardType="numeric"
+        value={this.state.valuePinPayWithFinger}
+        onChangeUserName={(text) => this.onChangePinPayFinger(text)}
+        iconLeft="facebook"
+        iconRight="close"
+        secureTextEntry={true}
+        textError={I18n.t("incorrectPhoneNumber")}
+        onclick={() => this.onClearPhone()}
+      />
+
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={() => this.onOpenFinger2()}
+      >
+        <Text style={styles.panelButtonTitle}>{I18n.t("txtNext")}</Text>
+      </TouchableOpacity>
+    </View>
+  );
   renderHeader = () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  );
+  renderHeader2 = () => (
     <View style={styles.header}>
       <View style={styles.panelHeader}>
         <View style={styles.panelHandle} />
@@ -1279,6 +1580,34 @@ class SettingScreen extends Component {
     this.setState({ onCallgetConfigAmonut: true, isLoading: true });
     // this.setState({ setModleShowinfo: true })
   }
+  toggleSwitchCheck = (value) => {
+    if(value==true){
+      this.setState({ valuePinPay: value });
+      bs2.current.snapTo(0);
+    }
+    else{
+      this.fingerQuickPay(value);
+      this.setState({ valuePinPay: value });
+      bs2.current.snapTo(0);
+
+    }
+    this.setState({ valuePinPay: value });
+    bs2.current.snapTo(0);
+  };
+ 
+  saveSwitchValue = async (value) => {
+    try {
+      await AsyncStorage.setItem("switchValue", JSON.stringify(value));
+      // pinPayFinger
+      await AsyncStorage.setItem(
+        "pinFingerPay",
+        JSON.stringify(this.state.ValuePin)
+      );
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   render() {
     const { isLoading, messge, responseMessage, switchSecurity } = this.state;
@@ -1287,14 +1616,22 @@ class SettingScreen extends Component {
       <View style={styles.container}>
         <BottomSheet
           ref={bs}
-          snapPoints={this.state.snapPoints}
+          snapPoints={Platform.OS=='ios' ?[580,0] :[330,0]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           initialSnap={1}
           callbackNode={fall}
           enabledGestureInteraction={true}
         />
-
+        <BottomSheet
+          ref={bs2}
+          snapPoints={Platform.OS=='ios' ?[570,0] :[330,0]}
+          renderContent={this.renderInner2}
+          renderHeader={this.renderHeader2}
+          initialSnap={1}
+          callbackNode={fall}
+          enabledGestureInteraction={true}
+        />
         <Animated.View
           style={{
             flex: 1,
@@ -1369,17 +1706,57 @@ class SettingScreen extends Component {
               >
                 <View style={styles.Fingerprint}>
                   <Image
-                    source={Images.ic_Fingerprint}
-                    style={styles.iconStyle}
+                      source={Platform.OS=='ios' ? Images.ic_Faceid : Images.ic_FingerPrint}
+                      style={styles.iconStyle}
                   />
                   <Text style={styles.txtItem}>
-                    {I18n.t("sensorDescription")}
+                    {Platform.OS=='ios' ? I18n.t("faceIdVerification") : I18n.t("fingerprintVeri")}
                   </Text>
                 </View>
                 <View>
                   <Switch
                     onValueChange={(value) => this.toggleSwitch(value)}
                     value={this.state.switchValue}
+                  />
+                </View>
+              </TouchableOpacity>
+              <Hr
+                marginLeft={0}
+                marginRight={0}
+                lineColor={Colors.borderColor}
+                marginTop={10}
+                marginBottom={10}
+              />
+            
+            
+              {/* <Hr
+                marginLeft={0}
+                marginRight={0}
+                lineColor={Colors.borderColor}
+                marginTop={10}
+                marginBottom={10}
+              /> */}
+              <TouchableOpacity
+                style={styles.rowStyleFingerprint}
+                // onPress={() => this.Fingerprint()}
+              >
+                <View style={styles.Fingerprint}>
+                  <Image
+                      source={Platform.OS=='ios' ? Images.ic_Faceid : Images.ic_FingerPrint}
+                      style={styles.iconStyle}
+                  />
+                  <Text style={styles.txtItem}>
+                  {I18n.t("quickPayment")}
+                  </Text>
+                </View>
+                <View>
+                  <Switch
+                    onValueChange={(value) => {
+                      this.toggleSwitchCheck(value);
+                      // this.onOpenFinger2(value)
+                      this.saveSwitchValue(value);
+                    }}
+                    value={this.state.switchValueCheck}
                   />
                 </View>
               </TouchableOpacity>
@@ -1421,7 +1798,7 @@ class SettingScreen extends Component {
                   </View>
                   <View
                     style={{
-                      width: Platform.OS='ios' ?"80%" :"80%",
+                      width: Platform.OS=='ios' ?"80%" :"85%",
                       flexWrap: "wrap",
                       // flexDirection: "row",
                       // backgroundColor:"red",

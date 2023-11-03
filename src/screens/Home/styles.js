@@ -52,7 +52,10 @@ export default StyleSheet.create({
   },
   FlatList: {
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
+    flexDirection:"row",
+    
+    
   },
   warpItemListOfThree: {
     height: Metrics.doubleSection * 1.8,

@@ -989,7 +989,7 @@ class LoginScreen extends Component {
             <View style={styles.fingerPrintContainer}>
               <TouchableOpacity onPress={() => this.finger()}>
                 <Image
-                  source={Images.ic_FingerPrint}
+                  source={Platform.OS=='ios' ? Images.ic_Faceid : Images.ic_FingerPrint}
                   style={styles.fingerPrintIcon}
                 />
               </TouchableOpacity>

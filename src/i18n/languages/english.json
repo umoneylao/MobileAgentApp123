@@ -684,6 +684,9 @@
 
 
   "sensorDescription":"Touch the fingerprint sensor",
+  "quickPayment":"Quick Payment",
+  "fingerprintVeri": "Fingerprint Verification",
+  "faceIdVerification": "Face ID Verification",
   "transferPerson":"Sender Name",
   "enterTransferorPhone":"Enter the transferor's phone number",
   "continue": "Continue",
@@ -1080,6 +1083,9 @@
 "accountdontHavePermission":"Your account don t permission to use this function",
 "ShopUnitel":"Unitel shop",
 "UnitelSalesman":"Unitel Salesman",
+"Ekyc":"Ekyc",
+"ideaInitiative":"Contrivance & Idea",
+
 "UnitelCommission":"Unitel Commission",
 "BaduLoto":"Badu Online",
 "WebviewMyUnitel":"MyUnitel",

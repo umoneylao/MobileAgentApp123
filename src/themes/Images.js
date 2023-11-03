@@ -46,6 +46,8 @@ const images = {
   ic_TermCondition: require('../images/ic_newSceen/ic_TermCondition.png'),
   ic_Logout: require('../images/ic_newSceen/ic_logoutNew.png'),
   ic_FingerPrint: require("../images/Icons/ic_fingerprint.jpg"),
+  ic_Faceid: require("../images/Icons/icon_faceid.png"),
+  ic_ekyc:require("../images/Icons/ic_ekyc.jpeg"),
   mdi_settings: require('../images/ic_newSceen/mdi_settings.png'),
 
   tab_home: require('../images/ic_newSceen/tab_home.png'),
@@ -90,6 +92,8 @@ const images = {
   ic_promotion01: require('../images/ic_newSceen/promotion01.jpeg'),
   ic_promotion02: require('../images/ic_newSceen/promotion02.jpeg'),
   ic_promotion03: require('../images/ic_newSceen/promotion03.jpeg'),
+
+  // ic_ekyc:require('../images/ic_newSceen/promotion03.jpeg'),
 
 
   icLoanOnlinePay: require('../images/ic_newSceen/ic_aecon.png'),

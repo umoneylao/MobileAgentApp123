@@ -24,7 +24,7 @@ import {
     QrScanScreen, MainSetting, Share, APAInsurance, CashinByQR, ViewCertificate, NampapaScreen,
     RecipientInformation, ListPayment, MenuWorldBank, DetailsCashOut, ListPaymentSuccess,
     ListCashOutError, webview, ShopUnitel, UnitelSalesman, UnitelCommission, BaduLoto, WebviewMyUnitel,
-    MBLesinge
+    MBLesinge,Ekyc,IdeaInitiative
 } from '../../screens'
 import { HeaderCompont } from '../../components'
 const Tab = createBottomTabNavigator();
@@ -801,6 +801,26 @@ function HomeStackScreen() {
                     headerBackTitleVisible: false,
                 })}
             />
+            {/* // mới thêm */}
+             <HomeStack.Screen
+                name="Ekyc"
+                component={Ekyc}
+                options={({ route }) => ({
+                    headerTitle: () => <HeaderCompont txtTitle='Ekyc' />,
+                    headerBackTitleVisible: false,
+                })}
+            />
+            {/* Sáng kiến ý tưởng */}
+             <HomeStack.Screen
+                name="IdeaInitiative"
+                component={IdeaInitiative}
+                options={({ route }) => ({
+                    // headerShown: false,
+                    headerTitle: () => <HeaderCompont txtTitle='ideaInitiative' />,
+                    headerBackTitleVisible: false,
+                })}
+            />
+
            
             <HomeStack.Screen
                 name="UnitelSalesman"

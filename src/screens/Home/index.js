@@ -50,6 +50,7 @@ import CircleCheckBox, {
 import { SERVER_PATH_EU } from "../../utils/Api";
 // import { groupMenuShopUnitel } from '../../models/MenuApp'
 import LottieView from "lottie-react-native";
+import IdeaInitiative from '../ideaInitiative'
 
 const { width, height } = Dimensions.get("window");
 const imageWidh = width - 60;
@@ -69,6 +70,13 @@ const imageHeighClose = (imageWidhClose / 268) * 232;
 // const rectBorderColor = Colors.white
 // const scanBarWidth = SCREEN_WIDTH * 0.46;
 // const scanBarHeight = SCREEN_WIDTH * 0.0025;
+  
+
+
+   
+   
+
+
 
 class Home extends Component {
   constructor(props) {
@@ -203,21 +211,26 @@ class Home extends Component {
     // if(item.title_promotion!=="BaduLoto"){
       return (
         <View style={{flexWrap:"wrap",alignItems:"center"}}>
-          {item.title_promotion==="UnitelSalesman" || item.content_promotion === "CUSTOMER_SERVICE" ? (
+          {item.title_promotion==="ideaInitiative" ||item.title_promotion==="Ekyc" ||item.title_promotion==="UnitelSalesman" || item.content_promotion === "CUSTOMER_SERVICE" && item.title_promotion!=="BaduLoto" && item.title_promotion!=="ShopUnitel" ? (
             <TouchableOpacity
               style={styles.warpItemList}
               onPress={() =>
                 item.status === "1" ? this.onNavigationCustomer(item) : null
               }
             >
-              <Image
+              {item.title_promotion =="Ekyc" ?<Image
+ source={{
+  uri: `${SERVER_PATH_EU}/cms-backend/cms/file/v1.0/image/${item.detail_imgs}`,
+}}                style={[item.status === "1" ? styles.iconStyle : styles.iconStyleDisible,{borderRadius:50}]
+                }
+              /> :<Image
                 source={{
                   uri: `${SERVER_PATH_EU}/cms-backend/cms/file/v1.0/image/${item.detail_imgs}`,
                 }}
                 style={
                   item.status === "1" ? styles.iconStyle : styles.iconStyleDisible
                 }
-              />
+              />}
               <Text style={styles.txtIcon} numberOfLines={2}>
                 {I18n.t(item.title_promotion)}
               </Text>
@@ -697,11 +710,46 @@ class Home extends Component {
       "title_promotion":"UnitelSalesman",
       "tyle":"5"
    };
+   const Ekyc=  {
+    "button_title":"null",
+    "content_promotion":"UnitelSalesman",
+    "detail_imgs":"ic_ekyc.jpeg",
+    "end_date":"2022-08-31T00:00:00.000+07:00",
+    "href":"Ekyc",
+    "id":"5",
+    "location":"lo",
+    "priority":"61",
+    "role_id":null,
+    "start_date":"2022-08-06T00:00:00.000+07:00",
+    "status":"1",
+    "title_promotion":"Ekyc",
+    "tyle":"5"
+ };
+ const ideaInitiative=  {
+  "button_title":"null",
+  "content_promotion":"IdeaInitiative",
+  "detail_imgs":"ic_creative.png",
+  "end_date":"2022-08-31T00:00:00.000+07:00",
+  "href":"IdeaInitiative",
+  "id":"62",
+  "location":"lo",
+  "priority":"62",
+  "role_id":null,
+  "start_date":"2022-08-06T00:00:00.000+07:00",
+  "status":"1",
+  "title_promotion":"ideaInitiative",
+  "tyle":"5"
+};
       try {
         switch (nextProps.actionType) {
           case "GET_MENU_HOME_SUCCESS":
             let dataManu = nextProps.dataManu;
             let dataManuPush = nextProps.dataManu.data.push(saleMan);
+            let dataManuPush2 = nextProps.dataManu.data.push(Ekyc);
+            let dataManuPush3 = nextProps.dataManu.data.push(ideaInitiative);
+
+
+            // dataManuPush.push()
 
             if (dataManu.data.length > 0) {
               // console.log('dataManu---------------0000000009999000:', dataManu)
@@ -830,7 +878,7 @@ class Home extends Component {
       errorMessenger,
     } = this.state;
 
-   
+   console.log("menuHome",infoAccount.phoneNumber)
 
 
 
@@ -949,20 +997,20 @@ class Home extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flex:1,
+                      // justifyContent: "center",
+                      // alignItems: "center",
+                      // flex:1,
                       flexWrap: "wrap",}}>
-                <FlatList
-                  data={menuHome}
-                  renderItem={({ item, index }) =>
-                    this.renderItemMenuCustomerService(item, index)
-                  }
-                  numColumns={4}
-                  showsHorizontalScrollIndicator={false}
-                  extraData={Object.assign(this.props)}
-                  keyExtractor={(item, index) => item.id}
-                />
+               {/* <FlatList
+                data={menuHome}
+                 renderItem={({ item, index }) => this.renderItemMenuCustomerService(item, index)}
+                numColumns={4}
+                 showsHorizontalScrollIndicator={false}
+                 extraData={Object.assign(this.props)}
+                keyExtractor={(item, index) => item.id}
+                contentContainerStyle={{  flexDirection: 'row', flexWrap: 'wrap' }}
+                /> */}
+                {menuHome.map((item,index)=>this.renderItemMenuCustomerService(item, index))}
               </View>
               </View>
             </View>
@@ -1174,6 +1222,7 @@ class Home extends Component {
             </View>
           </Pressable>
         </Modal>
+
 
         <Notification
           headerType="Warning"

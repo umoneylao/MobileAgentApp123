@@ -205,7 +205,7 @@ export default StyleSheet.create({
   fingerPrintIcon: {
     alignItems: "center",
     zIndex: 9999,
-    width: 60,
+    width:  60,
     height: 60,
   },
 });
